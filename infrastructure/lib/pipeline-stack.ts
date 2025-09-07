@@ -53,7 +53,7 @@ export class Pipeline extends Construct {
           },
         },
         artifacts: {
-          "base-directory": "dist",
+          "base-directory": "infrastructure/dist",
           files: ["**/*"],
         },
       }),
