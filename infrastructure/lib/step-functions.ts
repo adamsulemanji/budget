@@ -37,13 +37,13 @@ export class StepFunctions extends Construct {
 
     const parseWithTextractTask = new LambdaInvoke(this, 'ParseWithTextract', {
       lambdaFunction: parseStatementLambda,
-      payloadResponseOnly: true,
+      payloadResponseOnly: false,
       comment: 'Extract line items using Textract AnalyzeExpense',
     });
 
     const classifyWithBedrockTask = new LambdaInvoke(this, 'ClassifyWithBedrock', {
       lambdaFunction: classifyWithBedrockLambda,
-      payloadResponseOnly: true,
+      payloadResponseOnly: false,
       comment: 'Classify all line items in one Bedrock call',
     });
 
@@ -63,8 +63,7 @@ export class StepFunctions extends Construct {
       comment: 'Set statement status to FAILED on error',
     });
 
-    const definition = validateInputTask
-      .next(parseWithTextractTask)
+    const definition = parseWithTextractTask
       .next(classifyWithBedrockTask)
       .next(markStatementParsedTask);
 
@@ -93,7 +92,6 @@ export class StepFunctions extends Construct {
     }));
 
     // Add catch for errors to set statement status to FAILED
-    validateInputTask.addCatch(setStatementFailedTask, { errors: ['States.ALL'] });
     parseWithTextractTask.addCatch(setStatementFailedTask, { errors: ['States.ALL'] });
     classifyWithBedrockTask.addCatch(setStatementFailedTask, { errors: ['States.ALL'] });
 

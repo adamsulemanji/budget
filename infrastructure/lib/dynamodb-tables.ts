@@ -31,6 +31,13 @@ export class DynamoDBTables extends Construct {
       });
 
     this.transactionsTable.addGlobalSecondaryIndex({
+      indexName: 'by-statement-id',
+      partitionKey: { name: 'statementId', type: AttributeType.STRING },
+      sortKey: { name: 'sk', type: AttributeType.STRING },
+      projectionType: ProjectionType.ALL,
+    });
+
+    this.transactionsTable.addGlobalSecondaryIndex({
       indexName: 'CategoryIndex',
       partitionKey: { name: 'gsi2pk', type: AttributeType.STRING },
       sortKey: { name: 'gsi2sk', type: AttributeType.STRING },

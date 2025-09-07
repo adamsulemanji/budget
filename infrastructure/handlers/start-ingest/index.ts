@@ -1,9 +1,15 @@
 import { APIGatewayProxyEvent, APIGatewayProxyResult } from 'aws-lambda';
 import { SFNClient, StartExecutionCommand } from '@aws-sdk/client-sfn';
 import { v4 as uuidv4 } from 'uuid';
+import { stat } from 'fs';
 
 const sfnClient = new SFNClient({});
 const STATE_MACHINE_ARN = process.env.STATE_MACHINE_ARN!;
+const headers = {
+  'Access-Control-Allow-Origin': '*',
+  'Access-Control-Allow-Headers': '*',
+};
+
 
 interface IngestRequest {
   key: string;
@@ -31,16 +37,14 @@ export const main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxy
       };
     }
 
-    // Generate statement ID
+    // Create statement ID
     const statementId = uuidv4();
+
 
     // Prepare Step Functions input
     const input = {
-      userId,
+      ...body,
       statementId,
-      key,
-      issuer,
-      cardLast4,
     };
 
     // Start Step Functions execution
@@ -54,10 +58,7 @@ export const main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxy
 
     return {
       statusCode: 200,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: headers,
       body: JSON.stringify({
         executionArn: result.executionArn,
         statementId,
@@ -67,10 +68,7 @@ export const main = async (event: APIGatewayProxyEvent): Promise<APIGatewayProxy
     console.error('Error starting ingest workflow:', error);
     return {
       statusCode: 500,
-      headers: {
-        'Content-Type': 'application/json',
-        'Access-Control-Allow-Origin': '*',
-      },
+      headers: headers,
       body: JSON.stringify({ error: 'Internal server error' }),
     };
   }

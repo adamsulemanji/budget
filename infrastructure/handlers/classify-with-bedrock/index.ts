@@ -37,8 +37,38 @@ interface BedrockResponse {
   }>;
 }
 
-export const main = async (input: StepFunctionInput, context: Context): Promise<ClassificationResult> => {
+interface StepFunctionPayload {
+  Payload: {
+    success: boolean;
+    lineItems: Array<{
+      date: string;
+      merchant: string;
+      amount: number;
+      memo?: string;
+    }>;
+    input: StepFunctionInput;
+  };
+}
+
+export const main = async (inputPayload: StepFunctionInput | StepFunctionPayload, context: Context): Promise<ClassificationResult> => {
   try {
+    // Handle Step Function payload structure
+    let input: StepFunctionInput;
+    if ('Payload' in inputPayload) {
+      // This is coming from a Step Function with payloadResponseOnly: false
+      input = inputPayload.Payload.input;
+    } else {
+      // Direct invocation or payloadResponseOnly: true
+      input = inputPayload;
+    }
+
+    console.log('Step Function Input:', JSON.stringify(input, null, 2));
+    console.log('userId:', input.userId, 'statementId:', input.statementId);
+    
+    if (!input.userId || !input.statementId) {
+      throw new Error(`Missing required input: userId=${input.userId}, statementId=${input.statementId}`);
+    }
+
     console.log('Classifying transactions for statement:', input.statementId);
 
     // Get active categories from DynamoDB
@@ -63,24 +93,20 @@ export const main = async (input: StepFunctionInput, context: Context): Promise<
 
     // Call Bedrock
     const command = new InvokeModelCommand({
-      modelId: 'anthropic.claude-3-sonnet-20240229-v1:0', // Using Claude 3 Sonnet
+      modelId: 'meta.llama3-8b-instruct-v1:0',
       contentType: 'application/json',
       accept: 'application/json',
       body: JSON.stringify({
-        anthropic_version: 'bedrock-2023-05-31',
-        max_tokens: 4000,
-        messages: [
-          {
-            role: 'user',
-            content: prompt,
-          },
-        ],
+        prompt: prompt,
+        max_gen_len: 4000,
+        temperature: 0.1,
+        top_p: 0.9,
       }),
     });
 
     const response = await bedrockClient.send(command);
     const responseBody = JSON.parse(new TextDecoder().decode(response.body));
-    const classificationResult = JSON.parse(responseBody.content[0].text) as BedrockResponse;
+    const classificationResult = JSON.parse(responseBody.generation) as BedrockResponse;
 
     console.log('Bedrock classification result:', classificationResult);
 
@@ -110,7 +136,7 @@ export const main = async (input: StepFunctionInput, context: Context): Promise<
       success: false,
       classifiedCount: 0,
       error: error instanceof Error ? error.message : 'Unknown error',
-      input,
+      input: ('Payload' in inputPayload) ? inputPayload.Payload.input : inputPayload,
     };
   }
 };
@@ -131,18 +157,24 @@ async function getActiveCategories(userId: string): Promise<string[]> {
 }
 
 async function getUnclassifiedTransactions(userId: string, statementId: string): Promise<any[]> {
+  console.log('Querying for unclassified transactions:', { userId, statementId });
+  
   const command = new QueryCommand({
     TableName: TRANSACTIONS_TABLE_NAME,
-    KeyConditionExpression: 'pk = :pk',
-    FilterExpression: 'statementId = :statementId AND category = :category',
+    IndexName: 'by-statement-id',
+    KeyConditionExpression: 'statementId = :sid',
+    FilterExpression: 'category = :cat',
     ExpressionAttributeValues: {
-      ':pk': `USER#${userId}`,
-      ':statementId': statementId,
-      ':category': 'UNASSIGNED',
+      ':sid': statementId,
+      ':cat': 'UNASSIGNED',
     },
   });
 
+  console.log('DynamoDB Query Command:', JSON.stringify(command, null, 2));
+
   const response = await dynamoClient.send(command);
+  console.log('DynamoDB Query Response:', JSON.stringify(response, null, 2));
+  
   return response.Items || [];
 }
 

@@ -34,14 +34,19 @@ export class LambdaFunctions extends Construct {
     const { rawStatementsBucket, analyticsBucket, statementsTable, transactionsTable, categoriesTable } = props;
 
     // Helper function to create NodejsFunction
-    const createNodejsFunction = (name: string, handlerPath: string, environment?: { [key: string]: string }) => {
+    const createNodejsFunction = (
+      name: string,
+      handlerPath: string,
+      environment?: { [key: string]: string },
+      timeout?: Duration
+    ) => {
       return new NodejsFunction(this, name, {
         runtime: Runtime.NODEJS_20_X,
         handler: 'main',
         architecture: Architecture.X86_64,
         entry: path.join(__dirname, `../handlers/${handlerPath}/index.ts`),
         memorySize: 128,
-        timeout: Duration.seconds(30),
+        timeout: timeout ?? Duration.seconds(30),
         bundling: {
           minify: true,
           externalModules: [
@@ -77,31 +82,34 @@ export class LambdaFunctions extends Construct {
     this.startIngestLambda.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ['states:StartExecution'],
-      resources: ['*'], // Will be narrowed down later with Step Functions ARN
+      resources: ['*'],
     }));
 
     // validate-input Lambda
     this.validateInputLambda = createNodejsFunction('ValidateInputLambda', 'validate-input');
 
-    // parse-statement Lambda
-    this.parseStatementLambda = createNodejsFunction('ParseStatementLambda', 'parse-statement');
+        // parse-statement Lambda
+    this.parseStatementLambda = createNodejsFunction('ParseStatementLambda', 'parse-statement', {}, Duration.minutes(5));
     rawStatementsBucket.grantRead(this.parseStatementLambda);
     transactionsTable.grantWriteData(this.parseStatementLambda);
     this.parseStatementLambda.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
-      actions: ['textract:AnalyzeExpense'],
+      actions: ['textract:StartExpenseAnalysis', 'textract:GetExpenseAnalysis'],
       resources: ['*'], // Textract does not have resource-level permissions for AnalyzeExpense
     }));
 
     // classify-with-bedrock Lambda
-    this.classifyWithBedrockLambda = createNodejsFunction('ClassifyWithBedrockLambda', 'classify-with-bedrock');
+    this.classifyWithBedrockLambda = createNodejsFunction('ClassifyWithBedrockLambda', 'classify-with-bedrock', {}, Duration.minutes(15));
     categoriesTable.grantReadData(this.classifyWithBedrockLambda);
+    transactionsTable.grantReadData(this.classifyWithBedrockLambda);
     transactionsTable.grantWriteData(this.classifyWithBedrockLambda);
     this.classifyWithBedrockLambda.addToRolePolicy(new PolicyStatement({
-      effect: Effect.ALLOW,
-      actions: ['bedrock:InvokeModel'],
-      resources: ['arn:aws:bedrock:*:*:model/*'], // Will be narrowed down to specific model
-    }));
+        actions: [
+          "bedrock:InvokeModel",
+          "bedrock:InvokeModelWithResponseStream"
+        ],
+        resources: ["*"], // you can restrict to specific model ARNs later
+      }));
 
     // mark-parsed Lambda
     this.markParsedLambda = createNodejsFunction('MarkParsedLambda', 'mark-parsed');
