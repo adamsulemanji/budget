@@ -1,12 +1,11 @@
-import { APIGatewayProxyEventV2, APIGatewayProxyResultV2 } from 'aws-lambda';
+import { APIGatewayProxyEvent, APIGatewayProxyResult } from "aws-lambda";
 
-export async function main(
-  event: APIGatewayProxyEventV2,
-): Promise<APIGatewayProxyResultV2> {
-  console.log('event 👉', event);
-
+export const handler = async function (event: APIGatewayProxyEvent): Promise<APIGatewayProxyResult> {
+  console.log("request:", JSON.stringify(event, undefined, 4));
+  const stageName = process.env.STAGE_NAME!;
   return {
-    body: JSON.stringify({message: 'Successful lambda invocation'}),
     statusCode: 200,
+    headers: { "Content-Type": "text/plain" },
+    body: JSON.stringify({ message: "Successful lambda invocation" }),
   };
-}
+};

@@ -33,12 +33,12 @@ export class LambdaFunctions extends Construct {
     const { rawStatementsBucket, analyticsBucket, statementsTable, transactionsTable, categoriesTable } = props;
 
     // Helper function to create NodejsFunction
-    const createNodejsFunction = (name: string, environment?: { [key: string]: string }) => {
+    const createNodejsFunction = (name: string, handlerPath: string, environment?: { [key: string]: string }) => {
       return new NodejsFunction(this, name, {
         runtime: Runtime.NODEJS_20_X,
         handler: 'main',
         architecture: Architecture.X86_64,
-        entry: path.join(__dirname, `../handlers/test/index.ts`),
+        entry: path.join(__dirname, `../handlers/${handlerPath}/index.ts`),
         memorySize: 128,
         timeout: Duration.seconds(30),
         bundling: {
@@ -52,6 +52,7 @@ export class LambdaFunctions extends Construct {
             '@aws-sdk/lib-dynamodb',
             '@aws-sdk/client-sfn',
             'aws-sdk',
+            'uuid',
           ],
         },
         environment: {
@@ -66,13 +67,13 @@ export class LambdaFunctions extends Construct {
     };
 
     // get-upload-url Lambda
-    this.getUploadUrlLambda = createNodejsFunction('GetUploadUrlLambda', {
+    this.getUploadUrlLambda = createNodejsFunction('GetUploadUrlLambda', 'get-upload-url', {
       RAW_STATEMENTS_BUCKET_NAME: rawStatementsBucket.bucketName,
     });
     rawStatementsBucket.grantWrite(this.getUploadUrlLambda);
 
     // start-ingest Lambda
-    this.startIngestLambda = createNodejsFunction('StartIngestLambda');
+    this.startIngestLambda = createNodejsFunction('StartIngestLambda', 'start-ingest');
     this.startIngestLambda.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ['states:StartExecution'],
@@ -80,10 +81,10 @@ export class LambdaFunctions extends Construct {
     }));
 
     // validate-input Lambda
-    this.validateInputLambda = createNodejsFunction('ValidateInputLambda');
+    this.validateInputLambda = createNodejsFunction('ValidateInputLambda', 'validate-input');
 
     // parse-statement Lambda
-    this.parseStatementLambda = createNodejsFunction('ParseStatementLambda');
+    this.parseStatementLambda = createNodejsFunction('ParseStatementLambda', 'parse-statement');
     rawStatementsBucket.grantRead(this.parseStatementLambda);
     transactionsTable.grantWriteData(this.parseStatementLambda);
     this.parseStatementLambda.addToRolePolicy(new PolicyStatement({
@@ -93,7 +94,7 @@ export class LambdaFunctions extends Construct {
     }));
 
     // classify-with-bedrock Lambda
-    this.classifyWithBedrockLambda = createNodejsFunction('ClassifyWithBedrockLambda');
+    this.classifyWithBedrockLambda = createNodejsFunction('ClassifyWithBedrockLambda', 'classify-with-bedrock');
     categoriesTable.grantReadData(this.classifyWithBedrockLambda);
     transactionsTable.grantWriteData(this.classifyWithBedrockLambda);
     this.classifyWithBedrockLambda.addToRolePolicy(new PolicyStatement({
@@ -103,22 +104,22 @@ export class LambdaFunctions extends Construct {
     }));
 
     // mark-parsed Lambda
-    this.markParsedLambda = createNodejsFunction('MarkParsedLambda');
+    this.markParsedLambda = createNodejsFunction('MarkParsedLambda', 'mark-parsed');
     statementsTable.grantWriteData(this.markParsedLambda);
 
     // update-label Lambda
-    this.updateLabelLambda = createNodejsFunction('UpdateLabelLambda');
+    this.updateLabelLambda = createNodejsFunction('UpdateLabelLambda', 'update-label');
     transactionsTable.grantWriteData(this.updateLabelLambda);
 
     // transactions-to-s3 Lambda (DynamoDB Stream consumer)
-    this.transactionsToS3Lambda = createNodejsFunction('TransactionsToS3Lambda');
+    this.transactionsToS3Lambda = createNodejsFunction('TransactionsToS3Lambda', 'transactions-to-s3');
     analyticsBucket.grantWrite(this.transactionsToS3Lambda);
     this.transactionsToS3Lambda.addEventSource(new DynamoEventSource(transactionsTable, {
       startingPosition: StartingPosition.LATEST,
     }));
 
     // create-category Lambda
-    this.createCategoryLambda = createNodejsFunction('CreateCategoryLambda');
+    this.createCategoryLambda = createNodejsFunction('CreateCategoryLambda', 'categories');
     categoriesTable.grantWriteData(this.createCategoryLambda);
   }
 }

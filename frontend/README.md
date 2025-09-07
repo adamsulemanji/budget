@@ -1,36 +1,98 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Budget Tracker Frontend
+
+A simple Next.js frontend for uploading PDF statements to the Budget Tracker API.
+
+## Features
+
+- **Simple PDF Upload**: Clean, minimal interface for uploading credit card statements
+- **Default Next.js Style**: Uses the standard Next.js styling and layout
+- **File Validation**: Ensures only PDF files are uploaded
+- **Upload Feedback**: Shows upload progress and success/error messages
 
 ## Getting Started
 
-First, run the development server:
+### Prerequisites
 
+- Node.js 18+ 
+- npm or yarn
+
+### Installation
+
+1. Install dependencies:
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+2. Configure environment variables (optional):
+```bash
+# Create .env.local file with:
+NEXT_PUBLIC_API_URL=https://your-api-gateway-url.amazonaws.com/prod
+NEXT_PUBLIC_API_KEY=your-api-key-here
+```
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+3. Start development server:
+```bash
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+4. Open [http://localhost:3000](http://localhost:3000) in your browser.
 
-## Learn More
+## Usage
 
-To learn more about Next.js, take a look at the following resources:
+1. **Select PDF**: Click the upload area to select a credit card statement PDF
+2. **Upload**: Click the "Upload PDF" button to upload the file
+3. **Wait**: The file will be processed (currently simulated with a 2-second delay)
+4. **Success**: You'll see a success message when the upload is complete
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Project Structure
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```
+src/
+├── app/
+│   ├── page.tsx           # Main upload page
+│   ├── layout.tsx         # Root layout
+│   └── globals.css        # Global styles
+└── package.json           # Dependencies
+```
 
-## Deploy on Vercel
+## Development
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+### Available Scripts
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+- `npm run dev` - Start development server
+- `npm run build` - Build for production
+- `npm run start` - Start production server
+- `npm run lint` - Run Biome linter
+- `npm run format` - Format code with Biome
+
+## Deployment
+
+The frontend can be deployed to:
+- Vercel (recommended for Next.js)
+- Netlify
+- Any static hosting service
+
+### Build for Production
+
+```bash
+npm run build
+```
+
+The built files will be in the `.next/` directory.
+
+## Integration with Backend
+
+To connect with your Lambda functions:
+
+1. Deploy your infrastructure first
+2. Update the environment variables with your API Gateway URL
+3. Modify the `handleUpload` function in `src/app/page.tsx` to call your actual API endpoints
+
+## Customization
+
+The upload functionality is currently simulated. To integrate with your actual API:
+
+1. Update the `handleUpload` function to call your `/statements/upload` endpoint
+2. Add form fields for statement details (issuer, card last 4 digits)
+3. Handle the actual file upload to S3 using presigned URLs
+4. Add processing status tracking

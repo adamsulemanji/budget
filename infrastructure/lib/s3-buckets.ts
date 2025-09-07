@@ -1,5 +1,5 @@
 import { RemovalPolicy } from 'aws-cdk-lib';
-import { Bucket, BucketEncryption } from 'aws-cdk-lib/aws-s3';
+import { Bucket, BucketEncryption, HttpMethods } from 'aws-cdk-lib/aws-s3';
 import { Construct } from 'constructs';
 
 export class S3Buckets extends Construct {
@@ -13,6 +13,16 @@ export class S3Buckets extends Construct {
       removalPolicy: RemovalPolicy.DESTROY,
       autoDeleteObjects: true,
       encryption: BucketEncryption.S3_MANAGED,
+      cors: [
+        {
+          // Allow browser-based uploads (PUT) from localhost and other origins during dev
+          allowedMethods: [HttpMethods.PUT, HttpMethods.POST, HttpMethods.GET, HttpMethods.HEAD],
+          allowedOrigins: ['*'],
+          allowedHeaders: ['*'],
+          exposedHeaders: ['ETag'],
+          maxAge: 3000,
+        },
+      ],
     });
 
     this.analyticsBucket = new Bucket(this, 'AnalyticsBucket', {

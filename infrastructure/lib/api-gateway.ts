@@ -1,5 +1,5 @@
 import { CfnOutput, RemovalPolicy } from 'aws-cdk-lib';
-import { LambdaIntegration, RestApi, Cors, AuthorizationType, LambdaIntegrationOptions, IRestApi, Resource, Method } from 'aws-cdk-lib/aws-apigateway';
+import { LambdaIntegration, RestApi, Cors, AuthorizationType, LambdaIntegrationOptions, IRestApi, Resource, Method, CfnGatewayResponse } from 'aws-cdk-lib/aws-apigateway';
 import { IFunction } from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
 
@@ -22,38 +22,34 @@ export class ApiGateway extends Construct {
       restApiName: 'Budget Service',
       description: 'Service for budget tracking',
       defaultCorsPreflightOptions: {
-        allowOrigins: Cors.ALL_ORIGINS,
+        allowOrigins: ['*'],
         allowMethods: Cors.ALL_METHODS,
-      },
-      deployOptions: {
-        stageName: 'dev',
+        allowHeaders: [
+          'Content-Type',
+          'X-Amz-Date',
+          'Authorization',
+          'X-Api-Key',
+          'X-Amz-Security-Token',
+        ],
+        allowCredentials: true,
       },
     });
-
 
     const statementsResource = this.api.root.addResource('statements');
     const uploadResource = statementsResource.addResource('upload');
     const ingestResource = statementsResource.addResource('ingest');
 
-    uploadResource.addMethod('POST', new LambdaIntegration(getUploadUrlLambda), {
-      apiKeyRequired: true,
-    });
+    uploadResource.addMethod('POST', new LambdaIntegration(getUploadUrlLambda));
 
-    ingestResource.addMethod('POST', new LambdaIntegration(startIngestLambda), {
-      apiKeyRequired: true,
-    });
+    ingestResource.addMethod('POST', new LambdaIntegration(startIngestLambda));
 
     const transactionsResource = this.api.root.addResource('transactions');
     const updateLabelResource = transactionsResource.addResource('update-label');
 
-    updateLabelResource.addMethod('POST', new LambdaIntegration(updateLabelLambda), {
-      apiKeyRequired: true,
-    });
+    updateLabelResource.addMethod('POST', new LambdaIntegration(updateLabelLambda));
 
     const categoriesResource = this.api.root.addResource('categories');
-    categoriesResource.addMethod('POST', new LambdaIntegration(createCategoryLambda), {
-      apiKeyRequired: true,
-    });
+    categoriesResource.addMethod('POST', new LambdaIntegration(createCategoryLambda));
 
     new CfnOutput(this, 'ApiGatewayUrl', {
       value: this.api.url,
