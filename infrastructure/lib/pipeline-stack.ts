@@ -95,14 +95,14 @@ export class Pipeline extends Construct {
           version: "0.2",
           phases: {
             install: {
-              commands: ["cd ../frontend", "npm install --force"],
+              commands: ["cd frontend", "npm install --force"],
             },
             build: {
               commands: ["npm run build"],
             },
           },
           artifacts: {
-            "base-directory": "../frontend/build",
+            "base-directory": "frontend/build",
             files: ["**/*"],
           },
         }),
