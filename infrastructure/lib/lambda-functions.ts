@@ -33,7 +33,7 @@ export class LambdaFunctions extends Construct {
     const { rawStatementsBucket, analyticsBucket, statementsTable, transactionsTable, categoriesTable } = props;
 
     // Helper function to create NodejsFunction
-    const createNodejsFunction = (name: string, handler: string, environment?: { [key: string]: string }) => {
+    const createNodejsFunction = (name: string, environment?: { [key: string]: string }) => {
       return new NodejsFunction(this, name, {
         runtime: Runtime.NODEJS_20_X,
         handler: 'main',
@@ -66,13 +66,13 @@ export class LambdaFunctions extends Construct {
     };
 
     // get-upload-url Lambda
-    this.getUploadUrlLambda = createNodejsFunction('GetUploadUrlLambda', 'get-upload-url.ts', {
+    this.getUploadUrlLambda = createNodejsFunction('GetUploadUrlLambda', {
       RAW_STATEMENTS_BUCKET_NAME: rawStatementsBucket.bucketName,
     });
     rawStatementsBucket.grantWrite(this.getUploadUrlLambda);
 
     // start-ingest Lambda
-    this.startIngestLambda = createNodejsFunction('StartIngestLambda', 'start-ingest.ts');
+    this.startIngestLambda = createNodejsFunction('StartIngestLambda');
     this.startIngestLambda.addToRolePolicy(new PolicyStatement({
       effect: Effect.ALLOW,
       actions: ['states:StartExecution'],
@@ -80,10 +80,10 @@ export class LambdaFunctions extends Construct {
     }));
 
     // validate-input Lambda
-    this.validateInputLambda = createNodejsFunction('ValidateInputLambda', 'validate-input.ts');
+    this.validateInputLambda = createNodejsFunction('ValidateInputLambda');
 
     // parse-statement Lambda
-    this.parseStatementLambda = createNodejsFunction('ParseStatementLambda', 'parse-statement.ts');
+    this.parseStatementLambda = createNodejsFunction('ParseStatementLambda');
     rawStatementsBucket.grantRead(this.parseStatementLambda);
     transactionsTable.grantWriteData(this.parseStatementLambda);
     this.parseStatementLambda.addToRolePolicy(new PolicyStatement({
@@ -93,7 +93,7 @@ export class LambdaFunctions extends Construct {
     }));
 
     // classify-with-bedrock Lambda
-    this.classifyWithBedrockLambda = createNodejsFunction('ClassifyWithBedrockLambda', 'classify-with-bedrock.ts');
+    this.classifyWithBedrockLambda = createNodejsFunction('ClassifyWithBedrockLambda');
     categoriesTable.grantReadData(this.classifyWithBedrockLambda);
     transactionsTable.grantWriteData(this.classifyWithBedrockLambda);
     this.classifyWithBedrockLambda.addToRolePolicy(new PolicyStatement({
@@ -103,22 +103,22 @@ export class LambdaFunctions extends Construct {
     }));
 
     // mark-parsed Lambda
-    this.markParsedLambda = createNodejsFunction('MarkParsedLambda', 'mark-parsed.ts');
+    this.markParsedLambda = createNodejsFunction('MarkParsedLambda');
     statementsTable.grantWriteData(this.markParsedLambda);
 
     // update-label Lambda
-    this.updateLabelLambda = createNodejsFunction('UpdateLabelLambda', 'update-label.ts');
+    this.updateLabelLambda = createNodejsFunction('UpdateLabelLambda');
     transactionsTable.grantWriteData(this.updateLabelLambda);
 
     // transactions-to-s3 Lambda (DynamoDB Stream consumer)
-    this.transactionsToS3Lambda = createNodejsFunction('TransactionsToS3Lambda', 'transactions-to-s3.ts');
+    this.transactionsToS3Lambda = createNodejsFunction('TransactionsToS3Lambda');
     analyticsBucket.grantWrite(this.transactionsToS3Lambda);
     this.transactionsToS3Lambda.addEventSource(new DynamoEventSource(transactionsTable, {
       startingPosition: StartingPosition.LATEST,
     }));
 
     // create-category Lambda
-    this.createCategoryLambda = createNodejsFunction('CreateCategoryLambda', 'create-category.ts');
+    this.createCategoryLambda = createNodejsFunction('CreateCategoryLambda');
     categoriesTable.grantWriteData(this.createCategoryLambda);
   }
 }
