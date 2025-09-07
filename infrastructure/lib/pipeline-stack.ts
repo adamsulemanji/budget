@@ -122,7 +122,7 @@ export class Pipeline extends Construct {
       new codepipeline_actions.CloudFormationCreateUpdateStackAction({
         actionName: "CFN_Deploy",
         stackName: "BudgetStack",
-        templatePath: synthOutput.atPath("BudgetStack.template.json"),
+        templatePath: synthOutput.atPath("BudgetInfrastructureStack.template.json"),
         adminPermissions: true,
         cfnCapabilities: [cdk.CfnCapabilities.NAMED_IAM],
       });
