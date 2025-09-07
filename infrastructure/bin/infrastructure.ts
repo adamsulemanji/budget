@@ -1,9 +1,9 @@
 #!/usr/bin/env node
 import * as cdk from 'aws-cdk-lib';
-import { Budget_InfrastructureStack } from '../lib/infrastructure-stack';
+import { BudgetInfrastructureStack } from '../lib/infrastructure-stack';
 
 const app = new cdk.App();
-new  Budget_InfrastructureStack(app, 'Budget_InfrastructureStack', {
+new  BudgetInfrastructureStack(app, 'BudgetInfrastructureStack', {
   env: {
     account: process.env.CDK_DEFAULT_ACCOUNT,
     region: process.env.CDK_DEFAULT_REGION,

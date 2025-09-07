@@ -43,10 +43,7 @@ export class Pipeline extends Construct {
         version: "0.2",
         phases: {
           install: {
-            runtimeVersions: {
-              nodejs: "20",
-            },
-            commands: ["npm install -g aws-cdk", "npm install --legacy-peer-deps"],
+            commands: ["cd infrastructure", "npm install -g aws-cdk", "npm install --legacy-peer-deps"],
           },
           pre_build: {
             commands: ["node --version", "npm --version", "cdk --version"],

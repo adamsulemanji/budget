@@ -4,7 +4,7 @@ import { FrontendConstruct } from "./cloudfront";
 import { Pipeline } from "./pipeline-stack";
 // import * as sqs from 'aws-cdk-lib/aws-sqs';
 
-export class Budget_InfrastructureStack extends cdk.Stack {
+export class BudgetInfrastructureStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props?: cdk.StackProps) {
     super(scope, id, props);
 
