@@ -36,6 +36,7 @@ export class LambdaFunctions extends Construct {
     const createNodejsFunction = (name: string, handler: string, environment?: { [key: string]: string }) => {
       return new NodejsFunction(this, name, {
         runtime: Runtime.NODEJS_20_X,
+        handler: 'main',
         architecture: Architecture.X86_64,
         entry: path.join(__dirname, `../handlers/test/index.ts`),
         memorySize: 128,
