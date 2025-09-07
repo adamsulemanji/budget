@@ -1,7 +1,7 @@
 import axios from 'axios';
 
 // API Configuration
-const API_BASE_URL = 'https://xvppx6qv25.execute-api.us-east-1.amazonaws.com/dev';
+const API_BASE_URL = 'https://xvppx6qv25.execute-api.us-east-1.amazonaws.com/prod';
 
 const apiClient = axios.create({
   baseURL: API_BASE_URL,
@@ -78,7 +78,7 @@ export interface UpdateCategoryRequest {
 export const api = {
   // Get presigned URL for PDF upload
   getUploadUrl: async (): Promise<UploadResponse> => {
-    const response = await apiClient.post('/statements/upload');
+    const response = await apiClient.get('/statements/upload');
     return response.data;
   },
 

@@ -8,6 +8,7 @@ interface ApiGatewayProps {
   startIngestLambda: IFunction;
   updateLabelLambda: IFunction;
   createCategoryLambda: IFunction;
+  testLambda: IFunction;
 }
 
 export class ApiGateway extends Construct {
@@ -16,7 +17,7 @@ export class ApiGateway extends Construct {
   constructor(scope: Construct, id: string, props: ApiGatewayProps) {
     super(scope, id);
 
-    const { getUploadUrlLambda, startIngestLambda, updateLabelLambda, createCategoryLambda } = props;
+    const { getUploadUrlLambda, startIngestLambda, updateLabelLambda, createCategoryLambda, testLambda } = props;
 
     this.api = new RestApi(this, 'BudgetApi', {
       restApiName: 'Budget Service',
@@ -35,11 +36,16 @@ export class ApiGateway extends Construct {
       },
     });
 
+    // Testing endpoint
+    const testResource = this.api.root.addResource('test');
+    testResource.addMethod('GET', new LambdaIntegration(testLambda));
+
+
     const statementsResource = this.api.root.addResource('statements');
     const uploadResource = statementsResource.addResource('upload');
     const ingestResource = statementsResource.addResource('ingest');
 
-    uploadResource.addMethod('POST', new LambdaIntegration(getUploadUrlLambda));
+    uploadResource.addMethod('GET', new LambdaIntegration(getUploadUrlLambda));
 
     ingestResource.addMethod('POST', new LambdaIntegration(startIngestLambda));
 

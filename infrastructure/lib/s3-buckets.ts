@@ -15,7 +15,6 @@ export class S3Buckets extends Construct {
       encryption: BucketEncryption.S3_MANAGED,
       cors: [
         {
-          // Allow browser-based uploads (PUT) from localhost and other origins during dev
           allowedMethods: [HttpMethods.PUT, HttpMethods.POST, HttpMethods.GET, HttpMethods.HEAD],
           allowedOrigins: ['*'],
           allowedHeaders: ['*'],

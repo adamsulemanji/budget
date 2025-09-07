@@ -22,8 +22,6 @@ export default function Home() {
     try {
       const { uploadUrl, key } = await api.getUploadUrl();
 
-      console.log('Upload URL response:', { uploadUrl, key });
-
       // Use fetch to PUT the file to the presigned S3 URL. Ensure Content-Type matches what the presign expects.
       const res = await fetch(uploadUrl, {
         method: 'PUT',

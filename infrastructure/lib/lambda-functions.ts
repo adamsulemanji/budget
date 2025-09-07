@@ -26,6 +26,7 @@ export class LambdaFunctions extends Construct {
   public readonly updateLabelLambda: Function;
   public readonly transactionsToS3Lambda: Function;
   public readonly createCategoryLambda: Function;
+  public readonly testLambda: Function;
 
   constructor(scope: Construct, id: string, props: LambdaFunctionsProps) {
     super(scope, id);
@@ -51,8 +52,7 @@ export class LambdaFunctions extends Construct {
             '@aws-sdk/client-dynamodb',
             '@aws-sdk/lib-dynamodb',
             '@aws-sdk/client-sfn',
-            'aws-sdk',
-            'uuid',
+            'aws-sdk'
           ],
         },
         environment: {
@@ -121,5 +121,8 @@ export class LambdaFunctions extends Construct {
     // create-category Lambda
     this.createCategoryLambda = createNodejsFunction('CreateCategoryLambda', 'categories');
     categoriesTable.grantWriteData(this.createCategoryLambda);
+
+    // test Lambda
+    this.testLambda = createNodejsFunction('TestLambda', 'test');
   }
 }

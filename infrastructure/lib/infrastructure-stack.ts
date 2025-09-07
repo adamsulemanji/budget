@@ -40,6 +40,7 @@ export class BudgetInfrastructureStack extends cdk.Stack {
       startIngestLambda: lambdaFunctions.startIngestLambda,
       updateLabelLambda: lambdaFunctions.updateLabelLambda,
       createCategoryLambda: lambdaFunctions.createCategoryLambda,
+      testLambda: lambdaFunctions.testLambda,
     });
 
     new Pipeline(this, 'BudgetPipeline', {
