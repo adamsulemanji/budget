@@ -15,7 +15,6 @@ export class BudgetInfrastructureStack extends cdk.Stack {
 
     const frontend = new FrontendConstruct(this, 'BudgetFrontend');
 
-    const categoriesTable = new CategoriesTable(this, 'CategoriesTable');
     const dynamoDBTables = new DynamoDBTables(this, 'DynamoDBTables');
     const s3Buckets = new S3Buckets(this, 'S3Buckets');
 
@@ -24,7 +23,7 @@ export class BudgetInfrastructureStack extends cdk.Stack {
       analyticsBucket: s3Buckets.analyticsBucket,
       statementsTable: dynamoDBTables.statementsTable,
       transactionsTable: dynamoDBTables.transactionsTable,
-      categoriesTable: categoriesTable.table,
+      categoriesTable: dynamoDBTables.categoriesTable,
     });
 
     const stepFunctions = new StepFunctions(this, 'StepFunctions', {

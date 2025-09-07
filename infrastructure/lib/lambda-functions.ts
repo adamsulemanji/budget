@@ -37,7 +37,7 @@ export class LambdaFunctions extends Construct {
       return new NodejsFunction(this, name, {
         runtime: Runtime.NODEJS_20_X,
         architecture: Architecture.ARM_64,
-        entry: path.join(__dirname, `../../service/src/handlers/test.ts`),
+        entry: path.join(__dirname, `../handlers/test/index.ts`),
         memorySize: 128,
         timeout: Duration.seconds(30),
         bundling: {
@@ -50,6 +50,7 @@ export class LambdaFunctions extends Construct {
             '@aws-sdk/client-dynamodb',
             '@aws-sdk/lib-dynamodb',
             '@aws-sdk/client-sfn',
+            'aws-sdk',
           ],
         },
         environment: {

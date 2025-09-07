@@ -1,0 +1,617 @@
+digraph "Diagram" {
+  splines = "ortho";
+  pad = 1;
+  nodesep = 0.6;
+  ranksep = 0.75;
+  fontname = "Sans-Serif";
+  fontsize = 15;
+  dpi = 200;
+  rankdir = "BT";
+  compound = true;
+  fontcolor = "#222222";
+  edge [
+    color = "#D5871488";
+    penwidth = 2;
+    arrowhead = "dot";
+    arrowtail = "dot";
+  ];
+  node [
+    shape = "box";
+    style = "rounded";
+    fixedsize = true;
+    width = 1.7;
+    height = 1.7;
+    labelloc = "c";
+    imagescale = true;
+    fontname = "Sans-Serif";
+    fontsize = 8;
+    margin = 8;
+  ];
+  subgraph "BudgetInfrastructureStack" {
+    subgraph "cluster-SubGraph.BudgetInfrastructureStack" {
+      graph [
+        label = "BudgetInfrastructureStack";
+        labelloc = "b";
+        labeljust = "l";
+        margin = 10;
+        fontsize = 16;
+        penwidth = 2;
+        pencolor = "#888888";
+        style = "filled,rounded";
+        fillcolor = "#e4e4e4";
+      ];
+      "BudgetInfrastructureStack/StepFunctions/StateMachine" [
+        label = " StateMachine";
+        fontsize = 12;
+        image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_App-Integration/Arch_64/Arch_AWS-Step-Functions_64@5x.png";
+        imagescale = "true";
+        imagepos = "tc";
+        penwidth = 0;
+        shape = "node";
+        fixedsize = "true";
+        labelloc = "b";
+        width = 1.2;
+        height = 1.466;
+      ];
+      "BudgetInfrastructureStack/ApiGateway/BudgetApi" [
+        label = " BudgetApi";
+        fontsize = 12;
+        image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Networking-Content/64/Arch_Amazon-API-Gateway_64@5x.png";
+        imagescale = "true";
+        imagepos = "tc";
+        penwidth = 0;
+        shape = "node";
+        fixedsize = "true";
+        labelloc = "b";
+        width = 1.2;
+        height = 1.466;
+      ];
+      subgraph "cluster-SubGraph.BudgetFrontend" {
+        graph [
+          label = "BudgetFrontend";
+          labelloc = "b";
+          labeljust = "l";
+          margin = 10;
+          fontsize = 16;
+          penwidth = 2;
+          pencolor = "#888888";
+          style = "filled,rounded";
+          fillcolor = "#d6d6d6";
+        ];
+        "BudgetInfrastructureStack/BudgetFrontend/myBucket-budget" [
+          label = " myBucket-budget";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Storage/64/Arch_Amazon-S3-Standard_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/BudgetFrontend/cloudfront-OAI-budget" [
+          label = "\ncloudfront-OAI-budget";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Resource/Res_Security-Identity-and-Compliance/Res_48_Dark/Res_AWS-Identity-Access-Management_Permissions_48_Dark_gen.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.4819999999999998;
+        ];
+        "BudgetInfrastructureStack/BudgetFrontend/Certificate-budget" [
+          label = " Certificate-budget";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Security-Identity-Compliance/64/Arch_AWS-Certificate-Manager_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+        "BudgetInfrastructureStack/BudgetFrontend/myDist-budget" [
+          label = " myDist-budget";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Networking-Content/64/Arch_Amazon-CloudFront_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/BudgetFrontend/AliasRecord-budget" [
+          label = " AliasRecord-budget";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Resource/Res_Networking-and-Content-Delivery/Res_48_Dark/Res_Amazon-Route-53-Hosted-Zone_48_Dark_gen.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+      }
+      subgraph "cluster-SubGraph.DynamoDBTables" {
+        graph [
+          label = "DynamoDBTables";
+          labelloc = "b";
+          labeljust = "l";
+          margin = 10;
+          fontsize = 16;
+          penwidth = 2;
+          pencolor = "#888888";
+          style = "filled,rounded";
+          fillcolor = "#d6d6d6";
+        ];
+        "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+          label = " StatementsTable";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Database/64/Arch_Amazon-DynamoDB_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+        "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+          label = " TransactionsTable";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Database/64/Arch_Amazon-DynamoDB_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+        "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+          label = " CategoriesTable";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Database/64/Arch_Amazon-DynamoDB_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+      }
+      subgraph "cluster-SubGraph.S3Buckets" {
+        graph [
+          label = "S3Buckets";
+          labelloc = "b";
+          labeljust = "l";
+          margin = 10;
+          fontsize = 16;
+          penwidth = 2;
+          pencolor = "#888888";
+          style = "filled,rounded";
+          fillcolor = "#d6d6d6";
+        ];
+        "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+          label = " RawStatementsBucket";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Storage/64/Arch_Amazon-S3-Standard_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+          label = " AnalyticsBucket";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Storage/64/Arch_Amazon-S3-Standard_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+      }
+      subgraph "cluster-SubGraph.LambdaFunctions" {
+        graph [
+          label = "LambdaFunctions";
+          labelloc = "b";
+          labeljust = "l";
+          margin = 10;
+          fontsize = 16;
+          penwidth = 2;
+          pencolor = "#888888";
+          style = "filled,rounded";
+          fillcolor = "#d6d6d6";
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/GetUploadUrlLambda" [
+          label = " GetUploadUrlLambda";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" [
+          label = " StartIngestLambda";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/ValidateInputLambda" [
+          label = " ValidateInputLambda";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/ParseStatementLambda" [
+          label = " ParseStatementLambda";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/ClassifyWithBedrockLambda" [
+          label = "\nClassifyWithBedrockLa";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.4819999999999998;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/MarkParsedLambda" [
+          label = " MarkParsedLambda";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/UpdateLabelLambda" [
+          label = " UpdateLabelLambda";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/TransactionsToS3Lambda" [
+          label = "\nTransactionsToS3Lambd";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.4819999999999998;
+        ];
+        "BudgetInfrastructureStack/LambdaFunctions/CreateCategoryLambda" [
+          label = " CreateCategoryLambda";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Compute/64/Arch_AWS-Lambda_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 2;
+          height = 2.266;
+        ];
+      }
+      subgraph "cluster-SubGraph.BudgetPipeline" {
+        graph [
+          label = "BudgetPipeline";
+          labelloc = "b";
+          labeljust = "l";
+          margin = 10;
+          fontsize = 16;
+          penwidth = 2;
+          pencolor = "#888888";
+          style = "filled,rounded";
+          fillcolor = "#d6d6d6";
+        ];
+        "BudgetInfrastructureStack/BudgetPipeline/SynthProject" [
+          label = " SynthProject";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Developer- Tools/64/Arch_Amazon-CodeBuild_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+        "BudgetInfrastructureStack/BudgetPipeline/FrontendBuildProject" [
+          label = " FrontendBuildProject";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Developer- Tools/64/Arch_Amazon-CodeBuild_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+        "BudgetInfrastructureStack/BudgetPipeline/BudgetPipeline" [
+          label = " BudgetPipeline";
+          fontsize = 12;
+          image = "/Users/adamsulemanji/.nvm/versions/node/v22.14.0/lib/node_modules/cdk-dia/icons/aws/Service/Arch_Developer- Tools/64/Arch_AWS-CodePipeline_64@5x.png";
+          imagescale = "true";
+          imagepos = "tc";
+          penwidth = 0;
+          shape = "node";
+          fixedsize = "true";
+          labelloc = "b";
+          width = 1.2;
+          height = 1.466;
+        ];
+      }
+    }
+  }
+  "BudgetInfrastructureStack/BudgetFrontend/myBucket-budget" -> "BudgetInfrastructureStack/BudgetFrontend/cloudfront-OAI-budget" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetFrontend/myDist-budget" -> "BudgetInfrastructureStack/BudgetFrontend/myBucket-budget" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetFrontend/myDist-budget" -> "BudgetInfrastructureStack/BudgetFrontend/cloudfront-OAI-budget" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetFrontend/myDist-budget" -> "BudgetInfrastructureStack/BudgetFrontend/Certificate-budget" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetFrontend/AliasRecord-budget" -> "BudgetInfrastructureStack/BudgetFrontend/myDist-budget" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/GetUploadUrlLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/GetUploadUrlLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/GetUploadUrlLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/GetUploadUrlLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/GetUploadUrlLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" -> "BudgetInfrastructureStack/StepFunctions/StateMachine" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ValidateInputLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ValidateInputLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ValidateInputLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ValidateInputLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ValidateInputLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ParseStatementLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ParseStatementLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ParseStatementLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ParseStatementLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ParseStatementLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ClassifyWithBedrockLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ClassifyWithBedrockLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ClassifyWithBedrockLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ClassifyWithBedrockLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/ClassifyWithBedrockLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/MarkParsedLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/MarkParsedLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/MarkParsedLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/MarkParsedLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/MarkParsedLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/UpdateLabelLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/UpdateLabelLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/UpdateLabelLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/UpdateLabelLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/UpdateLabelLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/TransactionsToS3Lambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/TransactionsToS3Lambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/TransactionsToS3Lambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/TransactionsToS3Lambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/TransactionsToS3Lambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/CreateCategoryLambda" -> "BudgetInfrastructureStack/DynamoDBTables/CategoriesTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/CreateCategoryLambda" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/CreateCategoryLambda" -> "BudgetInfrastructureStack/DynamoDBTables/TransactionsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/CreateCategoryLambda" -> "BudgetInfrastructureStack/S3Buckets/RawStatementsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/LambdaFunctions/CreateCategoryLambda" -> "BudgetInfrastructureStack/S3Buckets/AnalyticsBucket" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetPipeline/SynthProject" -> "BudgetInfrastructureStack/BudgetPipeline/BudgetPipeline" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetPipeline/FrontendBuildProject" -> "BudgetInfrastructureStack/BudgetPipeline/BudgetPipeline" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetPipeline/BudgetPipeline" -> "BudgetInfrastructureStack/BudgetFrontend/myBucket-budget" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetPipeline/BudgetPipeline" -> "BudgetInfrastructureStack/BudgetPipeline/SynthProject" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/BudgetPipeline/BudgetPipeline" -> "BudgetInfrastructureStack/BudgetPipeline/FrontendBuildProject" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/StepFunctions/StateMachine" -> "BudgetInfrastructureStack/DynamoDBTables/StatementsTable" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/StepFunctions/StateMachine" -> "BudgetInfrastructureStack/LambdaFunctions/ValidateInputLambda" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/StepFunctions/StateMachine" -> "BudgetInfrastructureStack/LambdaFunctions/ParseStatementLambda" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/StepFunctions/StateMachine" -> "BudgetInfrastructureStack/LambdaFunctions/ClassifyWithBedrockLambda" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/StepFunctions/StateMachine" -> "BudgetInfrastructureStack/LambdaFunctions/MarkParsedLambda" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/ApiGateway/BudgetApi" -> "BudgetInfrastructureStack/LambdaFunctions/GetUploadUrlLambda" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/ApiGateway/BudgetApi" -> "BudgetInfrastructureStack/LambdaFunctions/StartIngestLambda" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/ApiGateway/BudgetApi" -> "BudgetInfrastructureStack/LambdaFunctions/UpdateLabelLambda" [
+    dir = "both";
+  ];
+  "BudgetInfrastructureStack/ApiGateway/BudgetApi" -> "BudgetInfrastructureStack/LambdaFunctions/CreateCategoryLambda" [
+    dir = "both";
+  ];
+}

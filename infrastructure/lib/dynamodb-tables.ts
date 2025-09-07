@@ -6,7 +6,7 @@ export class DynamoDBTables extends Construct {
   public readonly statementsTable: Table;
   public readonly transactionsTable: Table;
   public readonly categoriesTable: Table;
-  
+
   constructor(scope: Construct, id: string) {
     super(scope, id);
 
